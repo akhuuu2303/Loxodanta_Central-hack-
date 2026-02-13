@@ -28,7 +28,7 @@ f1 = f1_score(y_true, y_pred)
 cm = confusion_matrix(y_true, y_pred)
 
 print("\n" + "="*45)
-print("🏆 SENTINEL AI - FINAL PERFORMANCE METRICS 🏆")
+print(" TUSK TRUST AI - FINAL PERFORMANCE METRICS ")
 print("="*45)
 print(f"✅ Accuracy:  {accuracy * 100:.2f}% (Total correct predictions)")
 print(f"✅ Precision: {precision * 100:.2f}% (When AI said 'Sick', was it right?)")
@@ -50,7 +50,7 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', cbar=False,
             linewidths=2, linecolor='black')
 
 # Add titles and labels
-plt.title('Sentinel VAE: Final Confusion Matrix\n(Unseen African Elephant Data)', 
+plt.title('TUSK TRUST VAE: Final Confusion Matrix\n(Unseen African Elephant Data)', 
           fontsize=16, pad=20, color='white', weight='bold')
 plt.yticks(rotation=0, fontsize=12)
 plt.xticks(fontsize=12)
@@ -61,4 +61,5 @@ output_image = 'Final_Pitch_Confusion_Matrix.png'
 plt.savefig(output_image, dpi=300, transparent=True)
 
 print(f"\n📸 SUCCESS: Saved high-resolution graphic to -> '{output_image}'")
+
 print("Drop this image straight into your presentation slides!")
