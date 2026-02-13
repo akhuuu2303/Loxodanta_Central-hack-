@@ -1,6 +1,6 @@
 # 🐘 TUSK TRUST AI: Unsupervised Elephant Health Monitoring
 
-Sentinel AI is a computational biology platform designed to monitor African elephant health through non-invasive fecal microbiome analysis. By leveraging **Variational Autoencoders (VAEs)**, the system identifies gut dysbiosis and physiological stress signatures without the need for invasive blood tests or physical immobilization.
+TUSK TRUST AI is a computational biology platform designed to monitor African elephant health through non-invasive fecal microbiome analysis. By leveraging **Variational Autoencoders (VAEs)**, the system identifies gut dysbiosis and physiological stress signatures without the need for invasive blood tests or physical immobilization.
 
 
 
@@ -14,7 +14,7 @@ The gut microbiome of the African elephant (*Loxodonta africana*) is a highly se
 ---
 
 ## AI Architecture: Variational Autoencoder (VAE)
-Unlike traditional supervised models that require labeled "sick" data, Sentinel AI uses an **Unsupervised Anomaly Detection** approach.
+Unlike traditional supervised models that require labeled "sick" data, TUSK TRUST AI uses an **Unsupervised Anomaly Detection** approach.
 
 ### Key Features:
 * **Unsupervised Latent Space:** The VAE is trained exclusively on healthy African elephant profiles, learning the complex mathematical "manifold" of a healthy gut.
@@ -37,7 +37,7 @@ To ensure scientific validity and prevent data leakage, the pipeline implements:
 ---
 
 ##  Model Performance
-Validated on unseen African elephant data, the Sentinel VAE currently demonstrates:
+Validated on unseen African elephant data, the TUSK TRUST VAE currently demonstrates:
 * **Accuracy:** 97% (on validated Test_1 datasets)
 * **F1-Score:** 0.88
 * **ROC-AUC:** 0.89
@@ -49,7 +49,7 @@ Validated on unseen African elephant data, the Sentinel VAE currently demonstrat
 ##  Installation & Usage
 ```bash
 # Clone the repository
-git clone [https://github.com/your-username/sentinel-ai.git](https://github.com/your-username/sentinel-ai.git)
+git clone [https://github.com/your-username/TUSK TRUST-ai.git](https://github.com/your-username/TUSK TRUST-ai.git)
 
 # Install dependencies
 pip install torch pandas numpy scikit-learn seaborn
