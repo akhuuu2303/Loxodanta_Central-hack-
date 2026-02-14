@@ -401,6 +401,7 @@ with tab1:
             st.pyplot(fig_heat)
 
         st.divider()
+        
         st.write("### 📊 AI Classification Analytics")
         diag_col1, diag_col2 = st.columns([1, 2])
         
@@ -408,12 +409,22 @@ with tab1:
             st.write("#### AI Health Predictions")
             fig_dist, ax_dist = plt.subplots(figsize=(5,4))
             
-            # Define the exact colors for the 4 new categories
+            category_counts = df_res['AI_Diagnosis'].value_counts()
+            
+            # The exact colors for the categories
             new_palette = {
                 "🟢 Healthy (Optimal)": "#2E5A31",
                 "🟡 Environmentally Stressed (Monitoring)": "#FFD700",
                 "🟠 Eco-Biological Stress": "#FF8C00",
                 "🔴 Internal Biological Risk": "#FF0000"
+            }
+            
+            # --- NEW: Map the long names to clean, short abbreviations ---
+            abbreviations = {
+                "🟢 Healthy (Optimal)": "🟢 Healthy",
+                "🟡 Environmentally Stressed (Monitoring)": "🟡 Env Stress",
+                "🟠 Eco-Biological Stress": "🟠 Eco-Bio",
+                "🔴 Internal Biological Risk": "🔴 Bio Risk"
             }
             
             sns.stripplot(data=df_res, x='AI_Diagnosis', y='Anomaly_Score', palette=new_palette, size=8, jitter=True, ax=ax_dist)
@@ -422,14 +433,20 @@ with tab1:
             ax_dist.set_xlabel('AI Assigned Label')
             ax_dist.set_ylabel('VAE Anomaly Score')
             
-            # Rotate the x-axis text so the long labels fit nicely
-            ax_dist.tick_params(axis='x', rotation=45) 
+            # Extract the original long labels, swap them for abbreviations, and add the (n=X) count
+            current_labels = [item.get_text() for item in ax_dist.get_xticklabels()]
+            updated_labels = [f"{abbreviations.get(label, label)}\n(n={category_counts.get(label, 0)})" for label in current_labels]
+            
+            ax_dist.set_xticks(range(len(current_labels)))
+            ax_dist.set_xticklabels(updated_labels) 
+            
+            # (Notice we completely removed the rotation line here so the text stays flat!)
             
             # Hide the legend as the x-axis labels are now self-explanatory
             if ax_dist.get_legend(): ax_dist.get_legend().remove()
             
             buf_dist = io.BytesIO()
-            fig_dist.savefig(buf_dist, format="png", bbox_inches="tight")
+            fig_dist.savefig(buf_dist, format="png", bbox_inches="tight") 
             buf_dist.seek(0)
             
             st.download_button(label="📥 Download Classification (PNG)", data=buf_dist, file_name="ai_classification.png", mime="image/png")
@@ -604,3 +621,4 @@ with tab3:
     with col_i3:
         st.markdown("**3. Downloadable Triage Reports**")
         st.caption("We generate dynamic, actionable CSV spreadsheets that rank the herd by severity and explicitly state environmental warnings for park rangers.")
+
