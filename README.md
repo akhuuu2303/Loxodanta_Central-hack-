@@ -1,46 +1,66 @@
-# 🐘 TUSK TRUST AI: Unsupervised Elephant Health Monitoring
+# 🐘 Tusk Trust Sentinel
 
-TUSK TRUST AI is a computational biology platform designed to monitor African elephant health through non-invasive fecal microbiome analysis. By leveraging **Variational Autoencoders (VAEs)**, the system identifies gut dysbiosis and physiological stress signatures without the need for invasive blood tests or physical immobilization.
+> **The Next Generation of Wildlife Sentinel Systems. Utilizing Deep Learning & Geospatial Fusion for Extinction Prevention.**
 
+![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
+![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-EE4C2C.svg)
+![Streamlit](https://img.shields.io/badge/Streamlit-Web%20App-FF4B4B.svg)
+![GEE](https://img.shields.io/badge/Google_Earth_Engine-Geospatial-34A853.svg)
 
-
----
-
-## The Biological Thesis
-The gut microbiome of the African elephant (*Loxodonta africana*) is a highly sensitive indicator of metabolic and environmental stress.
-* **Healthy Baseline:** Characterized by a dominant Firmicutes population and a balanced Firmicutes/Bacteroidetes (F/B) ratio of **~2.79**.
-* **Dysbiosis Signature:** Stress factors (such as human-wildlife conflict or diet shifts) trigger a crash in Firmicutes and a corresponding spike in Bacteroidetes, leading to a measurable "F/B Inversion."
-
----
-
-## AI Architecture: Variational Autoencoder (VAE)
-Unlike traditional supervised models that require labeled "sick" data, TUSK TRUST AI uses an **Unsupervised Anomaly Detection** approach.
-
-### Key Features:
-* **Unsupervised Latent Space:** The VAE is trained exclusively on healthy African elephant profiles, learning the complex mathematical "manifold" of a healthy gut.
-* **Reconstruction Error as a Proxy for Health:** When presented with an unseen stressed profile, the VAE fails to accurately reconstruct the data. This **Mean Squared Error (MSE)** is then mapped to a standardized **Risk Score**.
-* **Traffic-Light Diagnostics:** Automated classification into three actionable zones:
-  *  **Green (<30%):** Stable Baseline.
-  *  **Yellow (30-70%):** Early Warning / Minor Dysbiosis.
-  *  **Red (>70%):** Critical Anomaly / Acute Stress.
+Tusk Trust Sentinel is a proactive, AI-driven triage dashboard built for conservationists and veterinarians. By merging non-invasive biological sampling (gut metagenomics) with global satellite telemetry, it acts as an early warning radar for ecological collapse in keystone species like elephants.
 
 
 
 ---
 
-##  Data Pipeline & Preprocessing
-To ensure scientific validity and prevent data leakage, the pipeline implements:
-1. **Biological Standardization:** Unified 328-feature genus-level abundance matrix.
-2. **Anti-Leakage Protocol:** Mathematical purging of test subjects from the training pool to ensure 100% blind testing.
-3. **Synthetic Dysbiosis Injection:** Generation of realistic testing sets using a literature-backed **2.8x - 3.0x Bacteroidetes spike** to validate detection sensitivity.
+## 📖 Table of Contents
+- [The Problem](#-the-problem)
+- [Key Features](#-key-features)
+- [System Architecture](#-system-architecture)
+- [Installation & Setup](#-installation--setup)
+- [Usage](#-usage)
+- [Repository Structure](#-repository-structure)
+- [Future Roadmap](#-future-roadmap)
 
 ---
 
-##  Model Performance
-Validated on unseen African elephant data, the TUSK TRUST VAE currently demonstrates:
-* **Accuracy:** 97% (on validated Test_1 datasets)
-* **F1-Score:** 0.88
-* **ROC-AUC:** 0.89
+## 🚨 The Problem
+Currently, wildlife conservation is deeply **reactive**. Vets are only deployed *after* an animal is visibly sick, which is often too late. Furthermore, traditional "Black Box" classification models require thousands of labeled "sick" examples to learn—data that simply doesn't exist for endangered species.
+
+**The Solution:** Tusk Trust Sentinel uses an unsupervised deep learning approach trained entirely on *healthy* biological baselines, combined with live environmental satellite data, to catch microscopic health deviations before they become systemic failures.
+
+---
+
+## 🚀 Key Features
+
+* **🧠 Unsupervised Biological Inference:** Routes high-dimensional genomic data (326 bacterial features) through a custom PyTorch Variational Autoencoder (VAE) to calculate a continuous 'Anomaly Score'.
+* **🛰️ Geospatial Telemetry (GEE Fusion):** Automatically extracts coordinates from uploaded samples and pings the Google Earth Engine API to fetch real-time landscape data (NDVI, Rainfall, Temperature).
+* **🌍 Eco-Biological Correlation:** Maps internal biological anomalies against hardcoded ecological danger zones (e.g., >35°C heat stress, <20mm severe drought) to determine the root cause of the biological shift.
+* **📦 Bulk Interpretability Export:** In-memory ZIP compilation allows researchers to instantly generate and download Microbiome Deviation Heatmaps for an entire herd with a single click.
+* **📊 Automated Triage Reporting:** Calculates a localized 'Risk Severity %' and appends specific landscape warnings into a structured, downloadable CSV for rapid veterinary dispatch.
+
+---
+
+## ⚙️ System Architecture
+
+Our platform employs a multi-layered approach to ensure interpretability and scientific rigor:
+
+1. **Dimensionality Reduction:** The VAE Encoder compresses 326 high-dimensional genomic features down to a dense 12D 'latent space'.
+2. **Reconstruction Penalty:** The Decoder attempts to reconstruct the original healthy microbiome. Stressed/sick data results in a high Reconstruction Error (used as our Anomaly Score).
+3. **Contextual Arbitration:** The Anomaly Score is plotted against satellite telemetry to separate landscape-driven stress (drought) from internal disease (pathogens).
+
+---
+
+## 💻 Installation & Setup
+
+### Prerequisites
+* Python 3.9+
+* (Optional) Google Earth Engine authenticated account. *Note: The system will safely fall back to simulated telemetry if GEE is not authenticated locally.*
+
+### 1. Clone the Repository
+```bash
+git clone [https://github.com/YourUsername/Tusk-Trust-Sentinel.git](https://github.com/YourUsername/Tusk-Trust-Sentinel.git)
+cd Tusk-Trust-Sentinel
 
 
 
