@@ -18,9 +18,6 @@ Tusk Trust Sentinel is a proactive, AI-driven triage dashboard built for conserv
 - [Key Features](#-key-features)
 - [System Architecture](#-system-architecture)
 - [Installation & Setup](#-installation--setup)
-- [Usage](#-usage)
-- [Repository Structure](#-repository-structure)
-- [Future Roadmap](#-future-roadmap)
 
 ---
 
