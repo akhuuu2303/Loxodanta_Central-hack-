@@ -184,10 +184,40 @@ with tab1:
                     # Dynamically calculate the threshold based on the slider
                     threshold = np.percentile(train_errs, sensitivity)
 
+                   # ==========================================
+                    # ADVANCED ROOT-CAUSE CLASSIFICATION
+                    # ==========================================
+                    diagnoses = []
+                    map_colors = []
+                    
+                    for i in range(len(df_input)):
+                        e_score = errors[i]
+                        is_bio_anomalous = e_score > threshold
+                        
+                        # Check if any GEE environmental danger zones are triggered
+                        has_env_stress = False
+                        if 'Temperature_C' in df_input.columns and df_input.loc[i, 'Temperature_C'] > 35.0: has_env_stress = True
+                        if 'Rainfall_mm' in df_input.columns and df_input.loc[i, 'Rainfall_mm'] < 20.0: has_env_stress = True
+                        if 'NDVI' in df_input.columns and df_input.loc[i, 'NDVI'] < 0.25: has_env_stress = True
+                        
+                        # Multi-Class Triage Logic
+                        if is_bio_anomalous and not has_env_stress:
+                            diagnoses.append("🔴 Internal Biological Risk")
+                            map_colors.append("#FF0000") # Red
+                        elif is_bio_anomalous and has_env_stress:
+                            diagnoses.append("🟠 Eco-Biological Stress")
+                            map_colors.append("#FF8C00") # Orange
+                        elif not is_bio_anomalous and has_env_stress:
+                            diagnoses.append("🟡 Environmentally Stressed (Monitoring)")
+                            map_colors.append("#FFD700") # Yellow
+                        else:
+                            diagnoses.append("🟢 Healthy (Optimal)")
+                            map_colors.append("#2E5A31") # Green
+
                     # Update Dataframe
                     df_input['Anomaly_Score'] = errors
-                    df_input['AI_Diagnosis'] = ['At Risk' if e > threshold else 'Healthy' for e in errors]
-                    df_input['Map_Color'] = ['#FF0000' if e > threshold else '#2E5A31' for e in errors]
+                    df_input['AI_Diagnosis'] = diagnoses
+                    df_input['Map_Color'] = map_colors
 
                     # Store results
                     st.session_state['scan_done'] = True
@@ -207,9 +237,20 @@ with tab1:
         df_res = res['df']
         
         # Calculate herd-level statistics
+        # Calculate herd-level statistics based on 4-Tier classification
         total_samples = len(df_res)
-        sick_count = len(df_res[df_res['AI_Diagnosis'] == 'At Risk'])
-        herd_status = "🔴 HERD AT RISK" if sick_count > 0 else "🟢 HERD STABLE"
+        
+        # Count anyone with a biological anomaly (Red or Orange)
+        sick_df = df_res[df_res['AI_Diagnosis'].isin(["🔴 Internal Biological Risk", "🟠 Eco-Biological Stress"])]
+        sick_count = len(sick_df)
+        
+        # Determine the overall status banner
+        if sick_count > 0:
+            herd_status = "🔴 HERD AT RISK"
+        elif len(df_res[df_res['AI_Diagnosis'] == "🟡 Environmentally Stressed (Monitoring)"]) > 0:
+            herd_status = "🟡 HERD STRESSED"
+        else:
+            herd_status = "🟢 HERD STABLE"
         
         st.success("Analysis, Triage & GEE Fusion Complete!")
         m1, m2, m3 = st.columns(3)
@@ -367,11 +408,25 @@ with tab1:
             st.write("#### AI Health Predictions")
             fig_dist, ax_dist = plt.subplots(figsize=(5,4))
             
-            sns.stripplot(data=df_res, x='AI_Diagnosis', y='Anomaly_Score', palette={'Healthy': '#2E5A31', 'At Risk': '#FF0000'}, size=8, jitter=True, ax=ax_dist)
+            # Define the exact colors for the 4 new categories
+            new_palette = {
+                "🟢 Healthy (Optimal)": "#2E5A31",
+                "🟡 Environmentally Stressed (Monitoring)": "#FFD700",
+                "🟠 Eco-Biological Stress": "#FF8C00",
+                "🔴 Internal Biological Risk": "#FF0000"
+            }
+            
+            sns.stripplot(data=df_res, x='AI_Diagnosis', y='Anomaly_Score', palette=new_palette, size=8, jitter=True, ax=ax_dist)
             ax_dist.axhline(res['threshold'], color='black', linestyle='dashed', linewidth=1.5, label='Threshold')
+            
             ax_dist.set_xlabel('AI Assigned Label')
             ax_dist.set_ylabel('VAE Anomaly Score')
-            ax_dist.legend()
+            
+            # Rotate the x-axis text so the long labels fit nicely
+            ax_dist.tick_params(axis='x', rotation=45) 
+            
+            # Hide the legend as the x-axis labels are now self-explanatory
+            if ax_dist.get_legend(): ax_dist.get_legend().remove()
             
             buf_dist = io.BytesIO()
             fig_dist.savefig(buf_dist, format="png", bbox_inches="tight")
